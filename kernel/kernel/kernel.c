@@ -17,5 +17,5 @@ void timer_init(void);
 void kernel_main(void) {
 	/* Initialize terminal interface */
 	terminal_initialize();
-	terminal_writestring("Kernel is booting\n");
+	terminal_writestring("Welcome to beanOS!\n");
 }
