@@ -1,20 +1,20 @@
 ; x86 crti.s
-section .init
-global _init
-global _init:function (_init.end - _init)
+format ELF
+section '.init' executable 
+public _init
 _init:
 	push ebp
 	mov esp, ebp
 	; gcc will nicely put the contents of crtbegin.o's .init section here
-.end:
+_init.end:
 
-section .fini
-global _fini:function (_fini.end - _fini)
+section '.fini' executable
+public _fini
 _fini:
 	push ebp
 	mov esp, ebp
 	; gcc will nicely put the contents of crtbegin.o's .fini section here.
-.end:
+_fini.end:
 
 
 

@@ -1,32 +1,33 @@
+format ELF 
 ; Declare constants for the multiboot header.
-MBALIGN  equ  1 << 0            ; align loaded modules on page boundaries
-MEMINFO  equ  1 << 1            ; provide memory map
-MBFLAGS  equ  MBALIGN | MEMINFO ; this is the Multiboot 'flag' field
-MAGIC    equ  0x1BADB002        ; 'magic number' lets bootloader find the header
-CHECKSUM equ -(MAGIC + MBFLAGS)   ; checksum of above, to prove we are multiboot
+MALIGN   =  1 shl 0 
+MINFO    =  1 shl 1 
+MBFLAGS  =  MALIGN or MINFO          ; this is the Multiboot 'flag' field
+MAGIC    =  0x1BADB002          ; 'magic number' lets bootloader find the header
+CHECKSUM = -(MAGIC + MBFLAGS)   ; checksum of above, to prove we are multiboot
 
 ; Declare a multiboot header that marks the program as a kernel.
-section .multiboot.data align=4
+section '.multiboot.data' align 4
 dd MAGIC
 dd MBFLAGS
 dd CHECKSUM
 
 ; Allocate the initial stack.
-section .bootstrap_stack align=4 nobits
+section '.bootstrap_stack' writeable align 4 
 stack_bottom:
-resb 16384                            ; 16 KiB
+rb 16384                            ; 16 KiB
 stack_top:
 
 ; Preallocate pages used for paging.
-section .bss align=4096 nobits
+section '.bss' writeable align 4096 
 boot_page_directory:
-resb 4096
+  rb 4096
 boot_page_table1:
-resb 4096
+  rb 4096
 
 ; The kernel entry point.
-section .multiboot.text
-global _start
+section '.multiboot.text' executable
+public _start
 _start:
   ; Physical address of boot_page_table1.
   mov edi, boot_page_table1 - 0xC0000000
@@ -37,8 +38,8 @@ _start:
   ; Map 1023 pages.
   mov ecx, 1023
 
-  extern _kernel_start
-  extern _kernel_end
+  extrn _kernel_start
+  extrn _kernel_end
 .map_pages:
   ; Only map the kernel.
   cmp esi, _kernel_start
@@ -61,7 +62,7 @@ _start:
 
 .done:
   ; Map VGA video memory to 0xC03FF000 as "present, writable".
-  mov dword [boot_page_table1 - 0xC0000000 + 1023 * 4], 0x000B8000 | 0x003
+  mov dword [boot_page_table1 - 0xC0000000 + 1023 * 4], 0x000B8000 or 0x003
 
   ; Map the page table to both virtual addresses 0x00000000 and 0xC0000000.
   mov dword [boot_page_directory - 0xC0000000], boot_page_table1 - 0xC0000000 + 0x003
@@ -77,10 +78,10 @@ _start:
   mov cr0, ecx
 
   ; Jump to higher half with an absolute jump.
-  lea ecx, [rel _start_higher_half]
+  lea ecx, [_start_higher_half]
   jmp ecx
 
-  section .text
+section '.text' executable
   _start_higher_half:
   ; Paging is now fully set up and enabled.
 
@@ -95,7 +96,7 @@ _start:
   mov esp, stack_top
 
   ; Enter the high-level kernel.
-  extern kernel_main
+  extrn kernel_main
   call kernel_main
 
   ; Infinite loop if the system has nothing more to do.
