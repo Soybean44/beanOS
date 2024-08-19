@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <kernel/util.h>
+#include "util.h"
 
-void outPortB(uint16_t port, uint8_t value) {
-	asm volatile ("outb %1 %0" : : "dN" (port), "a" (value));
+void outPortB(uint16_t Port, uint8_t Value) {
+	asm volatile ("outb %1, %0" : : "dN" (Port), "a" (Value));
 }

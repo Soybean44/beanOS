@@ -2,6 +2,7 @@
 #include <kernel/tty.h>
 #include <kernel/multiboot.h>
 #include <kernel/gdt.h>
+#include <kernel/idt.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -22,13 +23,12 @@ void kernel_main(uint32_t magic, struct multiboot_info* bootInfo) {
 	/* Initialize terminal interface */
 	terminal_initialize();
 	initGdt();
-
-	uint32_t mod1 = *(uint32_t*)(bootInfo->mods_addr + 4);
-	uint32_t physicalAllocStart = (mod1 + 0xFFF) & ~0xFFF;
-
-	initMemory(bootInfo->mem_upper * 1024, physicalAllocStart);
-
 	printf("Welcome to beanOS!\n");
+	initIdt();
 
-	for(;;);
+	//uint32_t mod1 = *(uint32_t*)(bootInfo->mods_addr + 4);
+	//uint32_t physicalAllocStart = (mod1 + 0xFFF) & ~0xFFF;
+
+	//initMemory(bootInfo->mem_upper * 1024, physicalAllocStart);
+
 }
