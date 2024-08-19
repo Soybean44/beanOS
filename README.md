@@ -5,4 +5,5 @@ This will be done via a unix-like interface to create all the userspace programs
 
 # Resources
 [Going further on x86](https://wiki.osdev.org/Going_Further_on_x86)
+[OliveStem](https://www.youtube.com/@olivestemlearning)
 
