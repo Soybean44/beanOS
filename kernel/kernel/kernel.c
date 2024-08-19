@@ -2,6 +2,7 @@
 #include <kernel/tty.h>
 #include <kernel/multiboot.h>
 #include <stdint.h>
+#include <stdio.h>
 
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
