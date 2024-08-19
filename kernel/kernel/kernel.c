@@ -1,4 +1,6 @@
+#include <kernel/memory.h>
 #include <kernel/tty.h>
+#include <kernel/multiboot.h>
 #include <stdint.h>
 
 
@@ -14,8 +16,9 @@
 
 void timer_init(void);
 
-void kernel_main(void) {
+void kernel_main(uint32_t magic, struct multiboot_info* bootInfo) {
 	/* Initialize terminal interface */
 	terminal_initialize();
-	terminal_writestring("Welcome to beanOS!\n");
+	initMemory(bootInfo);
+	printf("Welcome to beanOS!\n");
 }

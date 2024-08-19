@@ -32,8 +32,8 @@ section '.boot' executable
 public _start
 _start:
   ; map the initial page dir so that we have an upper half kernel
-  mov eax, (initial_page_dir - 0xC0000000)
-  mov cr3, eax
+  mov ecx, (initial_page_dir - 0xC0000000)
+  mov cr3, ecx
 
   ; turn on physical address extention
   mov ecx, cr4
@@ -51,6 +51,7 @@ section '.text' executable
 higher_half:
   mov esp, stack_top
   push ebx
+  push eax
   xor ebp, ebp
   extrn kernel_main
   call kernel_main
