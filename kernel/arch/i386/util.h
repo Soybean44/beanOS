@@ -2,6 +2,7 @@
 #define ARCH_I386_UTIL_H
 #include <stdint.h>
 void outPortB(uint16_t port, uint8_t value);
+char inPortB(uint16_t port);
 
 #define CEIL_DIV(a,b) (((a+b)-1)/b)
 

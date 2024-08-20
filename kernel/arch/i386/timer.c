@@ -10,8 +10,6 @@ const uint32_t freq = 1000;
 void onIrq0(struct InterruptRegisters* regs) {
 	(void)regs;
 	ticks += 1;
-
-	printf("Timer ticked!");
 }
 
 void initTimer() {

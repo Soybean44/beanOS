@@ -1,0 +1,46 @@
+#ifndef ARCH_I386_KEYBOARD_H
+#define ARCH_I386_KEYBOARD_H
+#include "util.h"
+
+enum {
+	KEY_UNKNOWN = 0xFFFFFFFF,
+	KEY_ESC = 0xFFFFFFFF - 1,
+	KEY_CTRL = 0xFFFFFFFF - 2,
+	KEY_LSHFT = 0xFFFFFFFF - 3,
+	KEY_RSHFT = 0xFFFFFFFF - 4,
+	KEY_ALT = 0xFFFFFFFF - 5,
+	KEY_F1 = 0xFFFFFFFF - 6,
+	KEY_F2 = 0xFFFFFFFF - 7,
+	KEY_F3 = 0xFFFFFFFF - 8,
+	KEY_F4 = 0xFFFFFFFF - 9,
+	KEY_F5 = 0xFFFFFFFF - 10,
+	KEY_F6 = 0xFFFFFFFF - 11,
+	KEY_F7 = 0xFFFFFFFF - 12,
+	KEY_F8 = 0xFFFFFFFF - 13,
+	KEY_F9 = 0xFFFFFFFF - 14,
+	KEY_F10 = 0xFFFFFFFF - 15,
+	KEY_F11 = 0xFFFFFFFF - 16,
+	KEY_F12 = 0xFFFFFFFF - 17,
+	KEY_SCRLCK = 0xFFFFFFFF - 18,
+	KEY_HOME = 0xFFFFFFFF - 19,
+	KEY_UP = 0xFFFFFFFF - 20,
+	KEY_LEFT = 0xFFFFFFFF - 21,
+	KEY_RIGHT = 0xFFFFFFFF - 22,
+	KEY_DOWN = 0xFFFFFFFF - 23,
+	KEY_PGUP = 0xFFFFFFFF - 24,
+	KEY_PGDOWN = 0xFFFFFFFF - 25,
+	KEY_END = 0xFFFFFFFF - 26,
+	KEY_INS = 0xFFFFFFFF - 27,
+	KEY_DEL = 0xFFFFFFFF - 28,
+	KEY_CAPS = 0xFFFFFFFF - 29,
+	KEY_NONE = 0xFFFFFFFF - 30,
+	KEY_ALTGR = 0xFFFFFFFF - 31,
+	KEY_NUMLCK = 0xFFFFFFFF - 32,
+};
+
+const uint32_t scancode_to_lowercase[128];
+const uint32_t scancode_to_uppercase[128];
+
+void initKeyboard();
+void keyboardHandler(struct InterruptRegisters *regs);
+#endif

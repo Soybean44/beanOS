@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "idt.h"
 #include "../util.h"
+#include "kernel/tty.h"
 
 struct idt_entry_struct idt_entries[256];
 struct idt_ptr_struct idt_ptr;
@@ -172,3 +173,4 @@ void irq_handler(struct InterruptRegisters* regs) {
 
 	outPortB(0x20,0x20);
 }
+

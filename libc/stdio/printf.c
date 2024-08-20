@@ -62,6 +62,36 @@ int printf(const char* restrict format, ...) {
 			if (!print(str, len))
 				return -1;
 			written += len;
+		} else if (*format == 'd') {
+			format++;
+			char buf[32];
+			size_t len = 0;
+			int n = (int) va_arg(parameters, int);
+			int neg = n < 0;
+			if (neg)
+				n=n*-1;
+			int dig;
+			do {
+				len++;
+				dig = n%10;
+				if (dig >= 10)
+					return -1;
+				char c = dig+'0';
+				buf[32-len] = c;
+				n = n/10;
+			} while (n>0 || n<0);
+			if (neg) {
+				len++;
+				buf[32-len] = '-';
+			}
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(buf+(32-len), len))
+				return -1;
+			written += len;
+
 		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);

@@ -86,3 +86,7 @@ void terminal_writestring(const char* data) {
 	terminal_write(data, strlen(data));
 }
 
+void terminal_backspace() {
+	if (terminal_column > 0)
+		terminal_putentryat(' ', terminal_color, --terminal_column, terminal_row);
+}
