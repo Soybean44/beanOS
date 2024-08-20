@@ -100,6 +100,7 @@ isr_common_stub:
   mov gs, ax
 
   push esp
+  cld
   call isr_handler
 
   add esp, 8
@@ -129,6 +130,7 @@ irq_common_stub:
   mov gs, ax
 
   push esp
+  cld
   call irq_handler
 
   add esp, 8

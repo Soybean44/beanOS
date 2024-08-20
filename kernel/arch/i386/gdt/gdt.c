@@ -24,7 +24,7 @@ void initGdt() {
 
 void writeTSS(uint32_t num, uint16_t ss0, uint32_t esp0) {
 	uint32_t base = (uint32_t) &tss_entry;
-	uint32_t limit = base + sizeof(tss_entry);
+	uint32_t limit = sizeof(tss_entry);
 	setGdtGate(5,base,limit,0xE9,0x00); // Task State Segment
 	memset(&tss_entry, 0, sizeof(tss_entry));
 

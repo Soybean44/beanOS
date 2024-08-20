@@ -136,12 +136,15 @@ char* exception_messages[] = {
 	"Reserved"
 };
 
+void manage_syscall(struct InterruptRegisters* regs);
 void isr_handler(struct InterruptRegisters* regs) {
 	if (regs->int_no < 32) {
 		printf(exception_messages[regs->int_no]);
 		printf("\n");
 		printf("Exception! System Halted\n");
 		for (;;);
+	} else if (regs->int_no == 128) {
+		manage_syscall(regs);
 	}
 }
 
@@ -174,3 +177,18 @@ void irq_handler(struct InterruptRegisters* regs) {
 	outPortB(0x20,0x20);
 }
 
+void manage_syscall(struct InterruptRegisters* regs) {
+	switch (regs->eax) {
+	case 0: {
+		terminal_write((const char*)regs->ebx,regs->ecx);
+		break;
+	}
+	default: {
+		printf(exception_messages[regs->int_no]);
+		printf("\n");
+		printf("Exception! System Halted\n");
+		for (;;);
+		break;
+	}
+	}
+}
