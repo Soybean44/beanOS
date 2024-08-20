@@ -1,10 +1,12 @@
 #include "gdt.h"
 #include <string.h>
 
-extern void gdt_flush(uint32_t);
+extern void setGdt(uint32_t);
+extern void reloadSegments();
 extern void tss_flush();
 
 struct gdt_entry_struct gdt_entries[6];
+struct gdt_entry_bits gdt[6];
 struct gdt_ptr_struct gdt_ptr;
 struct tss_entry_struct tss_entry;
 
@@ -17,15 +19,17 @@ void initGdt() {
 	setGdtGate(2,0,0xFFFFFFFF,0x92,0xCF); // Kernel data segment
 	setGdtGate(3,0,0xFFFFFFFF,0xFA,0xCF); // User code segment
 	setGdtGate(4,0,0xFFFFFFFF,0xF2,0xCF); // User data segment
+
 	writeTSS(5, 0x10, 0x0);
-	gdt_flush((uint32_t)&gdt_ptr);
+	setGdt((uint32_t)&gdt_ptr);
+	reloadSegments();
 	tss_flush();
 }
 
 void writeTSS(uint32_t num, uint16_t ss0, uint32_t esp0) {
 	uint32_t base = (uint32_t) &tss_entry;
-	uint32_t limit = sizeof(tss_entry);
-	setGdtGate(5,base,limit,0xE9,0x00); // Task State Segment
+	uint32_t limit = sizeof(tss_entry)-1;
+	setGdtGate(5,base,limit,0x89,0x00); // Task State Segment
 	memset(&tss_entry, 0, sizeof(tss_entry));
 
 	tss_entry.ss0 = ss0;

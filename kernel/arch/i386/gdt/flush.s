@@ -1,18 +1,20 @@
 format ELF
-public gdt_flush
-
-gdt_flush:
+public setGdt
+setGdt:
   mov eax, [esp+4]
   lgdt [eax]
+  ret
 
+public reloadSegments
+reloadSegments:
+  jmp 0x08:.flush
+.flush:
   mov eax, 0x10
   mov ds, ax
   mov es, ax
   mov fs, ax
   mov gs, ax
   mov ss, ax
-  jmp 0x08:.flush
-.flush:
   ret
 
 public tss_flush
