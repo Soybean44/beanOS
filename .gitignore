@@ -1,6 +1,6 @@
 *.iso
-isodir
-sysroot
 compile_commands.json
 .cache/
+obj/
+bin/
 
