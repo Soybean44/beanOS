@@ -3,4 +3,5 @@ compile_commands.json
 .cache/
 obj/
 bin/
+iso_root/
 
