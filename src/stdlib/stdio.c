@@ -22,6 +22,16 @@ int printf(char* format, ...) {
 			format++;
 			glyph = *format;
 			switch (glyph) {
+			case 'c': {
+				int c = va_arg(args, int);
+				putchar((char)c);
+				break;
+			}
+			case 's': {
+				char* s = va_arg(args, char*);
+				write_string((char*)s);
+				break;
+			}
 			case 'd': {
 				char buf[NUM_SIZE];
 				int size = 0;
