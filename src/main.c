@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "limine.h"
 #include "util.h"
-#include "tty.h"
+#include "memory.h"
 #include "stdlib/stdio.h"
 
 // Set the base revision to 2, this is recommended as this is the latest
@@ -106,7 +106,8 @@ void kmain(void) {
 	char* msg = "Hello World!\n";
 	printf(msg);
 	printf("My name is bean!\n");
-	printf("I am %d years old", 18);
+	printf("I am %d years old\n", 18);
+	readmemmaps();
 
 
 	// We're done, just hang...
