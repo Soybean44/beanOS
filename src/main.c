@@ -38,16 +38,9 @@ void kmain(void) {
 		hcf();
 	}
 
-
-	// Note: we assume the framebuffer model is RGB with 32-bit pixels.
-	//for (size_t i = 0; i < 100; i++) {
-	//	putpixel(0xffffff,i,i);
-	//}
-
 	char* msg = "Hello World!\n";
 	printf(msg);
-	printf("My name is bean!\n");
-	printf("I am %d %s%c\n\n", 18, "years ol", 'd');
+	printf("char: %c, string: %s, int: %d, hex, %x\n", 'a', "This is a string", 420, 0x69); // Testing out the different formating options
 
 	struct limine_memmap_entry* memmap = getFirstUseableMemmap();
 	if (memmap == 0) {
