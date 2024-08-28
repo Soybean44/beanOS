@@ -106,7 +106,7 @@ void kmain(void) {
 	char* msg = "Hello World!\n";
 	printf(msg);
 	printf("My name is bean!\n");
-	printf("I am %d %s%c\n", 18, "years ol", 'd');
+	printf("I am %d %s%c\n\n", 18, "years ol", 'd');
 	readmemmaps();
 
 

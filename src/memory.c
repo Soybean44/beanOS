@@ -60,7 +60,7 @@ void readmemmaps() {
 			break;
 		}
 		}
-		printf("Base %d, Length: %d\n", memmap->base, memmap->length);
+		printf("Base %x, Length: %x\n", memmap->base, memmap->length);
 	}
 }
 

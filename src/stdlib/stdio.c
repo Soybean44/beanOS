@@ -2,6 +2,7 @@
 #include "../tty.h"
 
 #define NUM_SIZE 32
+const char hex_digits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8','9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 int printf(char* format, ...) {
 	va_list args;
@@ -39,11 +40,27 @@ int printf(char* format, ...) {
 				int size = 0;
 				int num = va_arg(args, int);
 				int dig = num % 10;
+				// TODO: add negative numbers
 				while (num > 0) {
 					size++;
 					buf[NUM_SIZE-size]=dig+'0';
 					num /= 10;
 					dig = num % 10;
+				}
+				write(&buf[NUM_SIZE-size], size);
+				glyph = *(++format);
+				continue;
+			}
+			case 'x': { // Hexadecimal
+				char buf[NUM_SIZE];
+				int size = 0;
+				int num = va_arg(args, int);
+				int dig = num % 16;
+				while (num > 0) {
+					size++;
+					buf[NUM_SIZE-size]=hex_digits[dig];
+					num /= 16;
+					dig = num % 16;
 				}
 				write(&buf[NUM_SIZE-size], size);
 				glyph = *(++format);
