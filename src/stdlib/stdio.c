@@ -1,8 +1,9 @@
 #include <stdarg.h>
 #include "../tty.h"
 
-#define NUM_SIZE 32
+#define NUM_SIZE 256
 const char hex_digits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8','9', 'A', 'B', 'C', 'D', 'E', 'F'};
+char buf[NUM_SIZE];
 
 int printf(char* format, ...) {
 	va_list args;
@@ -36,7 +37,6 @@ int printf(char* format, ...) {
 				continue;
 			}
 			case 'd': {
-				char buf[NUM_SIZE];
 				int size = 0;
 				int num = va_arg(args, int);
 				int dig = num % 10;
@@ -52,7 +52,6 @@ int printf(char* format, ...) {
 				continue;
 			}
 			case 'x': { // Hexadecimal
-				char buf[NUM_SIZE];
 				int size = 0;
 				int num = va_arg(args, int);
 				int dig = num % 16;
