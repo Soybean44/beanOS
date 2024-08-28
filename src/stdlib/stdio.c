@@ -25,12 +25,14 @@ int printf(char* format, ...) {
 			case 'c': {
 				int c = va_arg(args, int);
 				putchar((char)c);
-				break;
+				glyph = *(++format);
+				continue;
 			}
 			case 's': {
 				char* s = va_arg(args, char*);
 				write_string((char*)s);
-				break;
+				glyph = *(++format);
+				continue;
 			}
 			case 'd': {
 				char buf[NUM_SIZE];
@@ -44,14 +46,15 @@ int printf(char* format, ...) {
 					dig = num % 10;
 				}
 				write(&buf[NUM_SIZE-size], size);
-				break;
+				glyph = *(++format);
+				continue;
 			}
 			default: {
 				write_string("This formatting has not been implemented.\n");
+				glyph = *(++format);
 				break;
 			}
 			}
-			format++;
 		}
 	}
 	va_end(args);
