@@ -133,7 +133,20 @@ unsigned char font8x8_basic[128][8] = {
 	{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}    // U+007F
 };
 
+#define CHARACTER_SPACING 9
+int tty_col = 5;
+int tty_row = 15;
+
+void tty_newline() {
+	tty_col = 5;
+	tty_row += CHARACTER_SPACING;
+}
+
 void drawchar_transparent(unsigned char c, int x, int y, int fgcolor) {
+	if (c == '\n') {
+		tty_newline();
+		return;
+	}
 	int cx,cy;
 	int mask[8]= {1,2,4,8,16,32,64,128};
 	unsigned char* glyph = font8x8_basic[(int)c];
@@ -141,18 +154,36 @@ void drawchar_transparent(unsigned char c, int x, int y, int fgcolor) {
 	for(cy=0; cy<8; cy++) {
 		for(cx=0; cx<8; cx++) {
 			if(glyph[cy]&mask[cx]) {
-				putpixel(fgcolor,x+cx,y+cy-12);
+				putpixel(fgcolor, x + cx, y + cy - 12);
 			}
 		}
 	}
 }
 
-void write_string(char* msg) {
-	int i = 0;
+void putchar(char c) {
+	drawchar_transparent(c, tty_col, tty_row, 0xFFFFFF);
+	if (c != '\n')
+		tty_col += CHARACTER_SPACING;
+}
 
-	while(*msg) {
-		drawchar_transparent(*msg, 50+i, 50, 0xFFFFFF);
+void write(char* msg, unsigned int size) {
+	unsigned int ptr = 0;
+
+	while(*msg && ptr<size) {
+		drawchar_transparent(*msg, tty_col, tty_row, 0xFFFFFF);
+		if (*msg != '\n')
+			tty_col += CHARACTER_SPACING;
 		msg++;
-		i += 9;
+		ptr++;
 	}
 }
+
+void write_string(char* msg) {
+	while(*msg) {
+		drawchar_transparent(*msg, tty_col, tty_row, 0xFFFFFF);
+		if (*msg != '\n')
+			tty_col += CHARACTER_SPACING;
+		msg++;
+	}
+}
+

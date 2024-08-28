@@ -4,6 +4,7 @@
 #include "limine.h"
 #include "util.h"
 #include "tty.h"
+#include "stdlib/stdio.h"
 
 // Set the base revision to 2, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -102,8 +103,10 @@ void kmain(void) {
 	//	putpixel(0xffffff,i,i);
 	//}
 
-	char* msg = "Hello World!";
-	write_string(msg);
+	char* msg = "Hello World!\n";
+	printf(msg);
+	printf("My name is bean!\n");
+	printf("I am %d years old", 18);
 
 
 	// We're done, just hang...
