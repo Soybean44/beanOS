@@ -5,6 +5,7 @@
 #include "util.h"
 #include "memory.h"
 #include "stdlib/stdio.h"
+#include "gdt/gdt.h"
 
 // Set the base revision to 2, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -37,6 +38,7 @@ void kmain(void) {
 	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
 		hcf();
 	}
+	initGdt();
 
 	char* msg = "Hello World!\n";
 	printf(msg);

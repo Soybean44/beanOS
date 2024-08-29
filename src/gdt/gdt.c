@@ -2,12 +2,11 @@
 #include "gdt.h"
 #include "../memory.h"
 
-extern void setGdt(uint32_t);
+extern void setGdt(uint16_t, uint32_t);
 extern void reloadSegments();
 extern void tss_flush();
 
-struct gdt_entry_struct gdt_entries[6];
-struct gdt_entry_bits gdt[6];
+struct gdt_entry_struct gdt_entries[5];
 struct gdt_ptr_struct gdt_ptr;
 struct tss_entry_struct tss_entry;
 
@@ -16,22 +15,21 @@ void initGdt() {
 	gdt_ptr.base = (uint32_t)&gdt_entries;
 
 	setGdtGate(0,0,0,0,0); // Null segment
-	setGdtGate(1,0,0xFFFFFFFF,0x9A,0xCF); // Kernel code segment
-	setGdtGate(2,0,0xFFFFFFFF,0x92,0xCF); // Kernel data segment
-	setGdtGate(3,0,0xFFFFFFFF,0xFA,0xCF); // User code segment
-	setGdtGate(4,0,0xFFFFFFFF,0xF2,0xCF); // User data segment
+	setGdtGate(1,0,0x0000FFFF,0x9A,0xCF); // Kernel code segment
+	setGdtGate(2,0,0x0000FFFF,0x92,0xCF); // Kernel data segment
+	setGdtGate(3,0,0x0000FFFF,0xFA,0xCF); // User code segment
+	setGdtGate(4,0,0x0000FFFF,0xF2,0xCF); // User data segment
 
-	writeTSS(5, 0x10, 0x0);
-	setGdt((uint32_t)&gdt_ptr);
+	//writeTSS(5, 0x10, 0x0);
+	setGdt(gdt_ptr.limit, gdt_ptr.base);
 	reloadSegments();
-	tss_flush();
+	//tss_flush();
 }
 
-// TODO: Change this to 64 bit system segment
 void writeTSS(uint32_t num, uint16_t ss0, uint32_t esp0) {
 	uint32_t base = (uint32_t) &tss_entry;
 	uint32_t limit = sizeof(tss_entry)-1;
-	setGdtGate(5,base,limit,0x89,0x00); // Task State Segment
+	setGdtGate(num,base,limit,0x89,0x00); // Task State Segment
 	memset(&tss_entry, 0, sizeof(tss_entry));
 
 	tss_entry.ss0 = ss0;
