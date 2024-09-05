@@ -38,7 +38,7 @@ void kmain(void) {
 	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
 		hcf();
 	}
-	initGdt();
+	//initGdt();
 
 	char* msg = "Hello World!\n";
 	printf(msg);
